@@ -1,0 +1,39 @@
+# Parámetros:  ./sim_pag_lru 16 3 HEA DES 100 N
+# Ejecutando orden:  ./gen_traza HEA DES 100
+
+---------- INFORME GENERAL ----------
+
+Referencias de lectura:   1500
+Referencias de escritura: 887
+Fallos de página:         282
+Volcados de pág. a disco: 238
+
+---------- TABLA DE PÁGINAS ---------
+
+   PÁGINA   Presente      Marco   Modificada    timestamp reloj-tstamp
+       0          1          0              1           2386              1
+       1          1          1              1           2214            173
+       2          1          2              1           1954            433
+       3          0          -              -              -              -
+       4          0          -              -              -              -
+       5          0          -              -              -              -
+       6          0          -              -              -              -
+
+---------- TABLA DE MARCOS ----------
+
+     MARCO    Página   Presente   Modificada
+       0          0        1          1
+       1          1        1          1
+       2          2        1          1
+
+--------- INFORME REEMPLAZO ---------
+
+Reemplazo LRU
+Reloj actual: 2387
+Timestamp mínimo: 1954
+Timestamp máximo: 2386
+
+-------------------------------------
+
+FALLOS DE PÁGINA: --->> 282 <<---
+

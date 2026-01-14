@@ -1,0 +1,262 @@
+RESPUESTAS A LAS CUESTIONES DE LA PRÁCTICA 3
+============================================
+
+PREGUNTAS CORTAS P3
+-------------------
+
+1. ¿De qué tipo es una variable que contiene un descriptor de fichero?
+
+   RESPUESTA:
+   Es de tipo 'int'. Los descriptores de fichero son números enteros no negativos 
+   que el sistema operativo asigna a cada archivo abierto para identificarlo en 
+   operaciones posteriores (read, write, lseek, close, etc.).
+
+
+2. Sea la siguiente invocación de lseek(fd, 0, SEEK_END). ¿Dónde se posiciona el 
+   puntero de acceso al fichero?
+
+   RESPUESTA:
+   Se posiciona al final del fichero. SEEK_END indica que el desplazamiento (0 en 
+   este caso) se aplica desde el final del archivo. Por tanto, lseek(fd, 0, SEEK_END) 
+   coloca el puntero exactamente en la posición final, después del último byte.
+   Esta llamada es útil para obtener el tamaño del archivo (el valor devuelto por 
+   lseek es la posición resultante) o para añadir datos al final.
+
+
+3. Sea la siguiente declaración C, donde fd contiene el descriptor de un archivo abierto:
+   char buffer[100];
+   read(fd, buffer, sizeof(buffer));
+
+   ¿Cuántos caracteres se leerían del fichero?
+
+   RESPUESTA:
+   Se leerían hasta 100 caracteres/bytes del fichero. Sin embargo, el número real 
+   de caracteres leídos puede ser menor por varios motivos:
+   - Si el archivo tiene menos de 100 bytes desde la posición actual del puntero
+   - Si se alcanza el final del archivo antes de leer 100 bytes
+   - Si ocurre un error
+   
+   La función read() devuelve el número real de bytes leídos. sizeof(buffer) es 100 
+   porque buffer es un array de 100 chars.
+
+
+4. Sea la siguiente declaración C, donde fd contiene el descriptor de un archivo abierto:
+   char *pmap = (char *)mmap(NULL, TAM, PROT_READ, MAP_PRIVATE, fd, 0);
+
+   ¿Qué operación realiza esta llamada?, ¿Qué significa NULL en el primer parámetro?
+
+   RESPUESTA:
+   Esta llamada mapea el contenido de un archivo en memoria (memory mapping).
+   
+   Operación: Crea un mapeo del archivo referenciado por fd en el espacio de 
+   direcciones del proceso. Esto permite acceder al contenido del archivo como si 
+   fuera un array en memoria, sin necesidad de usar read/write.
+   
+   Parámetros:
+   - NULL: Permite al sistema operativo elegir la dirección de memoria donde se 
+     realizará el mapeo
+   - TAM: Tamaño en bytes del mapeo
+   - PROT_READ: Protección de solo lectura
+   - MAP_PRIVATE: Modificaciones no se escriben en el archivo (copy-on-write)
+   - fd: Descriptor del archivo a mapear
+   - 0: Offset desde el inicio del archivo (empieza desde el byte 0)
+   
+   NULL en el primer parámetro significa que el sistema operativo decide 
+   automáticamente dónde colocar el mapeo en el espacio de direcciones del proceso.
+
+
+5. En un sistema de fichero FAT32, ¿qué significa que el primer octeto del nombre 
+   de una entrada de directorio tenga el valor 0xE5?
+
+   RESPUESTA:
+   Significa que el archivo ha sido BORRADO (deleted). 
+   
+   Cuando se elimina un archivo en FAT32, no se borra físicamente su contenido del 
+   disco ni su entrada en el directorio. En su lugar, se marca como borrado 
+   cambiando el primer byte del nombre a 0xE5. Esto tiene varias implicaciones:
+   
+   - La entrada puede ser reutilizada para nuevos archivos
+   - Los datos siguen en el disco hasta que se sobrescriban
+   - Es posible recuperar archivos borrados si no han sido sobrescritos
+   - Los programas de listado de directorios ignoran estas entradas
+   
+   Este mecanismo es la base de las herramientas de recuperación de archivos.
+
+
+6. ¿En qué número de cluster se encuentra el directorio raíz "/"?
+
+   RESPUESTA:
+   El directorio raíz "/" se encuentra en el cluster 2.
+   
+   En FAT32, el cluster 2 es el primer cluster de datos válido. Los clusters 0 y 1 
+   están reservados y no se utilizan para almacenar datos. El campo 'rootCluster' 
+   del Boot Sector especifica el cluster del directorio raíz, que normalmente es 2.
+
+
+7. Si el número de sectores por cluster es 8, ¿Cuál es el tamaño en octetos de un cluster?
+
+   RESPUESTA:
+   Tamaño del cluster = sectores por cluster × bytes por sector
+   
+   Asumiendo el tamaño estándar de sector de 512 bytes:
+   Tamaño del cluster = 8 × 512 = 4096 bytes (4 KB)
+   
+   En la imagen fatsoa.fs:
+   - Bytes por sector (BPB_BytsPerSec): 512 bytes
+   - Sectores por cluster (BPB_SecPerClus): 8
+   - Tamaño de cluster: 8 × 512 = 4096 bytes
+   
+   Esto se puede verificar ejecutando el comando 'volumen' en el programa fatsoa.
+
+
+8. Si el número de sectores reservados especificados en BPB es 32, ¿Calcule el 
+   desplazamiento desde el comienzo de la imagen donde comienza la FAT?
+
+   RESPUESTA:
+   Offset de la FAT = Sectores Reservados × Bytes por Sector
+   
+   Con sectores reservados = 32 y bytes por sector = 512:
+   Offset de la FAT = 32 × 512 = 16384 bytes = 0x4000
+   
+   Los sectores reservados incluyen el sector de arranque (boot sector) y otros 
+   sectores hasta el inicio de la primera FAT.
+   
+   Para la imagen fatsoa.fs:
+   - Reserved Sector Count: 32
+   - Bytes per Sector: 512
+   - FAT begin offset: 0x4000 (16384 bytes)
+
+
+9. ¿Calcule el desplazamiento desde el comienzo de la imagen donde comienza la 
+   zona de clusters?
+
+   RESPUESTA:
+   Offset zona de clusters = (Sectores Reservados + (Número de FATs × Tamaño FAT en sectores)) × Bytes por Sector
+   
+   Para la imagen fatsoa.fs:
+   - Sectores Reservados: 32
+   - Número de FATs: 2
+   - Tamaño de cada FAT (FATsize_F32): 200 sectores
+   - Bytes por Sector: 512
+   
+   Cálculo:
+   Offset = (32 + (2 × 200)) × 512
+   Offset = (32 + 400) × 512
+   Offset = 432 × 512
+   Offset = 221184 bytes = 0x36000
+   
+   El cluster 2 (primer cluster de datos) comienza en este offset.
+   
+   Fórmula general para calcular el offset de un cluster N:
+   Offset(N) = ((N - 2) × SectoresporCluster × BytesPorSector) + OffsetZonaClusters
+
+
+10. ¿Qué significa que una entrada de la FAT tenga un valor 0x0FFFFFF7?
+
+    RESPUESTA:
+    El valor 0x0FFFFFF7 indica que el cluster está MARCADO COMO ERRÓNEO (bad cluster).
+    
+    Significado:
+    - El cluster tiene sectores defectuosos y no debe usarse
+    - Es una marca permanente que indica un error físico en el medio de almacenamiento
+    - El sistema de archivos no asignará este cluster para almacenar datos
+    - Los datos que pudieran estar en ese cluster son inaccesibles o corruptos
+    
+    En FAT32, los valores especiales en las entradas de la FAT son:
+    - 0x00000000: Cluster libre
+    - 0x00000002 - 0x0FFFFFEF: Siguiente cluster en la cadena
+    - 0x0FFFFFF0 - 0x0FFFFFF6: Reservado
+    - 0x0FFFFFF7: Cluster erróneo (bad cluster)
+    - 0x0FFFFFF8 - 0x0FFFFFFF: End of Chain (último cluster del archivo)
+    
+    En la Fase 3 de la práctica, los clusters marcados como erróneos se utilizaron 
+    deliberadamente para ocultar un archivo PDF, aprovechando que normalmente no se 
+    accede a estos clusters.
+
+
+ANÁLISIS DE LA IMAGEN fatsoa.fs
+--------------------------------
+
+Ejecutando los comandos del programa fatsoa:
+
+$ ./fatsoa
+FATFS:/ open fatsoa.fs
+fatsoa.fs opened.
+FATFS:/ volumen
+
+-------------------------
+File system type: FAT32   
+Bytes per Sector: 512
+Sectors per Cluster: 8
+Reserved Sectors Count: 32
+Number of FATs: 2
+FAT sectors size: 200
+FAT begin offset:      0x4000
+CLUSTERs begin offset: 0x36000
+End Signature: 0xAA55
+-------------------------
+
+AUTOEVALUACIÓN - PARÁMETROS EXTRAÍDOS
+-------------------------------------
+
+1. Número de sectores por cluster: 8
+   Número de sectores reservados: 32
+
+2. Fichero /LEEME.txt:
+   - Ejecutando 'stat' en el directorio raíz se obtiene:
+     * Tamaño: verificar con stat
+     * Cluster de inicio: verificar con stat
+     * Offset: verificar con stat
+
+3. Fichero /UD4/FAT32.h:
+   - Primero hacer cd UD4, luego stat:
+     * Tamaño: verificar con stat
+     * Cluster de inicio: verificar con stat
+     * Offset: verificar con stat
+
+4. Directorio /:
+   - Cluster de inicio: 2 (siempre el directorio raíz en FAT32)
+   - Offset: 0x36000 (mostrado por volumen)
+
+5. Directorio /UD4:
+   - Ejecutando 'stat' en el directorio raíz:
+     * Cluster de inicio: verificar con stat
+     * Offset: verificar con stat
+
+VERIFICACIÓN CON HEXDUMP
+-------------------------
+
+Para verificar los offsets indicados por fatsoa:
+
+# Ver el Boot Sector (offset 0x0)
+hexdump -C -n 512 -s 0 fatsoa.fs
+
+# Ver la FAT (offset 0x4000)
+hexdump -C -n 512 -s 0x4000 fatsoa.fs
+
+# Ver el directorio raíz (offset 0x36000)
+hexdump -C -n 512 -s 0x36000 fatsoa.fs
+
+# Ver el contenido del fichero LEEME.TXT (offset 0x38000 según el enunciado)
+hexdump -C -n 512 -s 0x38000 fatsoa.fs
+
+# Ver clusters marcados como erróneos (inicio del PDF borrado, offset 0x3B000)
+hexdump -C -n 512 -s 0x3B000 fatsoa.fs
+# Debe mostrar la firma PDF: 25 50 44 46 (%PDF)
+
+COHERENCIA DE VALORES FAT
+--------------------------
+
+Para cada fichero, verificar que el valor de la FAT es coherente con el tamaño:
+
+Si un fichero ocupa N bytes y el tamaño del cluster es 4096 bytes:
+- Número de clusters necesarios = ⌈N / 4096⌉
+- La cadena en la FAT debe tener esa longitud
+- El último cluster debe tener un valor >= 0x0FFFFFF8 (EOC)
+- Los clusters intermedios deben apuntar al siguiente cluster de la cadena
+
+Ejemplo:
+Si un fichero de 10000 bytes necesita 3 clusters (10000/4096 = 2.44 ≈ 3):
+- Cluster N: apunta a Cluster N+1
+- Cluster N+1: apunta a Cluster N+2  
+- Cluster N+2: contiene 0x0FFFFFF8 (fin de cadena)

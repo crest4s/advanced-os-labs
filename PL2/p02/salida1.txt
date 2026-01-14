@@ -1,0 +1,91 @@
+# Parámetros:  ./sim_pag_aleatorio 1 3 HEA DES 4 D
+# Ejecutando orden:  ./gen_traza HEA DES 4
+@ FALLO DE PÁGINA en P1!
+@ Alojando P1 en M0
+	L 1==P1 (M0)+0
+@ FALLO DE PÁGINA en P3!
+@ Alojando P3 en M1
+	L 3==P3 (M1)+0
+	E 1==P1 (M0)+0
+	L 1==P1 (M0)+0
+	E 3==P3 (M1)+0
+	E 1==P1 (M0)+0
+@ FALLO DE PÁGINA en P0!
+@ Alojando P0 en M2
+	L 0==P0 (M2)+0
+	L 1==P1 (M0)+0
+@ FALLO DE PÁGINA en P2!
+@ Eligiendo (al azar) P1 de M0 para reemplazarla
+@ Volcando P1 modificada a disco para reemplazarla
+@ Reemplazando víctima P1 por P2 en M0
+	L 2==P2 (M0)+0
+	E 0==P0 (M2)+0
+	L 3==P3 (M1)+0
+@ FALLO DE PÁGINA en P1!
+@ Eligiendo (al azar) P2 de M0 para reemplazarla
+@ Reemplazando víctima P2 por P1 en M0
+	E 1==P1 (M0)+0
+	L 1==P1 (M0)+0
+	E 3==P3 (M1)+0
+	L 0==P0 (M2)+0
+	E 1==P1 (M0)+0
+	E 0==P0 (M2)+0
+	L 3==P3 (M1)+0
+	L 0==P0 (M2)+0
+	E 3==P3 (M1)+0
+	L 1==P1 (M0)+0
+@ FALLO DE PÁGINA en P2!
+@ Eligiendo (al azar) P0 de M2 para reemplazarla
+@ Volcando P0 modificada a disco para reemplazarla
+@ Reemplazando víctima P0 por P2 en M2
+	L 2==P2 (M2)+0
+@ FALLO DE PÁGINA en P0!
+@ Eligiendo (al azar) P3 de M1 para reemplazarla
+@ Volcando P3 modificada a disco para reemplazarla
+@ Reemplazando víctima P3 por P0 en M1
+	E 0==P0 (M1)+0
+	L 0==P0 (M1)+0
+	E 1==P1 (M0)+0
+	L 2==P2 (M2)+0
+	L 0==P0 (M1)+0
+	E 2==P2 (M2)+0
+	L 1==P1 (M0)+0
+	E 0==P0 (M1)+0
+	L 0==P0 (M1)+0
+	E 1==P1 (M0)+0
+	E 0==P0 (M1)+0
+	L 1==P1 (M0)+0
+	L 0==P0 (M1)+0
+	E 1==P1 (M0)+0
+	E 0==P0 (M1)+0
+
+---------- INFORME GENERAL ----------
+
+Referencias de lectura:   20
+Referencias de escritura: 17
+Fallos de página:         7
+Volcados de pág. a disco: 3
+
+---------- TABLA DE PÁGINAS ---------
+
+   PÁGINA   Presente      Marco   Modificada
+       0        1            1        1
+       1        1            0        1
+       2        1            2        1
+       3        0            -        -
+
+---------- TABLA DE MARCOS ----------
+
+     MARCO    Página   Presente   Modificada
+       0          1        1          1
+       1          0        1          1
+       2          2        1          1
+
+--------- INFORME REEMPLAZO ---------
+
+Reemplazo aleatorio (no hay info. específica)
+
+-------------------------------------
+
+FALLOS DE PÁGINA: --->> 7 <<---
+

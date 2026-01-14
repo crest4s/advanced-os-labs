@@ -1,0 +1,40 @@
+# Parámetros:  ./sim_pag_fifo2op 16 3 HEA DES 100 N
+# Ejecutando orden:  ./gen_traza HEA DES 100
+
+---------- INFORME GENERAL ----------
+
+Referencias de lectura:   1500
+Referencias de escritura: 887
+Fallos de página:         285
+Volcados de pág. a disco: 247
+
+---------- TABLA DE PÁGINAS ---------
+
+   PÁGINA   Presente      Marco        Modif          Ref
+       0          1          2            1            1
+       1          1          0            1            1
+       2          1          1            1            1
+       3          0          -            -            -
+       4          0          -            -            -
+       5          0          -            -            -
+       6          0          -            -            -
+
+---------- TABLA DE MARCOS ----------
+
+     MARCO    Página   Presente        Modif          Ref
+       0          1          1            1            1
+       1          2          1            1            1
+       2          0          1            1            1
+
+--------- INFORME REEMPLAZO ---------
+
+Reemplazo FIFO con segunda oportunidad
+Marcos ocupados y bit R:
+M2 → P0 (R=1)
+M0 → P1 (R=1)
+M1 → P2 (R=1)
+
+-------------------------------------
+
+FALLOS DE PÁGINA: --->> 285 <<---
+

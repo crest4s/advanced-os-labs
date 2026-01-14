@@ -1,0 +1,109 @@
+# Parámetros:  ./sim_pag_nfu 1 3 HEA DES 4 D
+# Ejecutando orden:  ./gen_traza HEA DES 4
+@ ¡FALLO DE PÁGINA en P1!
+@ Alojando P1 en M0
+	L 1 == P1 (M0) + 0
+@ ¡FALLO DE PÁGINA en P3!
+@ Alojando P3 en M1
+	L 3 == P3 (M1) + 0
+	E 1 == P1 (M0) + 0
+@ [NFU] Actualizando contadores (tick)
+	L 1 == P1 (M0) + 0
+	E 3 == P3 (M1) + 0
+	E 1 == P1 (M0) + 0
+@ ¡FALLO DE PÁGINA en P0!
+@ Alojando P0 en M2
+	L 0 == P0 (M2) + 0
+@ [NFU] Actualizando contadores (tick)
+	L 1 == P1 (M0) + 0
+@ ¡FALLO DE PÁGINA en P2!
+@ NFU elige P0 (contador=1) como víctima
+@ Reemplazando P0 por P2 en M2
+	L 2 == P2 (M2) + 0
+@ ¡FALLO DE PÁGINA en P0!
+@ NFU elige P2 (contador=0) como víctima
+@ Reemplazando P2 por P0 en M2
+	E 0 == P0 (M2) + 0
+	L 3 == P3 (M1) + 0
+@ [NFU] Actualizando contadores (tick)
+	E 1 == P1 (M0) + 0
+	L 1 == P1 (M0) + 0
+	E 3 == P3 (M1) + 0
+	L 0 == P0 (M2) + 0
+@ [NFU] Actualizando contadores (tick)
+	E 1 == P1 (M0) + 0
+	E 0 == P0 (M2) + 0
+	L 3 == P3 (M1) + 0
+	L 0 == P0 (M2) + 0
+@ [NFU] Actualizando contadores (tick)
+	E 3 == P3 (M1) + 0
+	L 1 == P1 (M0) + 0
+@ ¡FALLO DE PÁGINA en P2!
+@ NFU elige P1 (contador=3) como víctima
+@ Volcando P1 modificada a disco
+@ Reemplazando P1 por P2 en M0
+	L 2 == P2 (M0) + 0
+	E 0 == P0 (M2) + 0
+@ [NFU] Actualizando contadores (tick)
+	L 0 == P0 (M2) + 0
+@ ¡FALLO DE PÁGINA en P1!
+@ NFU elige P2 (contador=1) como víctima
+@ Reemplazando P2 por P1 en M0
+	E 1 == P1 (M0) + 0
+@ ¡FALLO DE PÁGINA en P2!
+@ NFU elige P1 (contador=3) como víctima
+@ Volcando P1 modificada a disco
+@ Reemplazando P1 por P2 en M0
+	L 2 == P2 (M0) + 0
+	L 0 == P0 (M2) + 0
+@ [NFU] Actualizando contadores (tick)
+	E 2 == P2 (M0) + 0
+@ ¡FALLO DE PÁGINA en P1!
+@ NFU elige P2 (contador=2) como víctima
+@ Volcando P2 modificada a disco
+@ Reemplazando P2 por P1 en M0
+	L 1 == P1 (M0) + 0
+	E 0 == P0 (M2) + 0
+	L 0 == P0 (M2) + 0
+@ [NFU] Actualizando contadores (tick)
+	E 1 == P1 (M0) + 0
+	E 0 == P0 (M2) + 0
+	L 1 == P1 (M0) + 0
+	L 0 == P0 (M2) + 0
+@ [NFU] Actualizando contadores (tick)
+	E 1 == P1 (M0) + 0
+	E 0 == P0 (M2) + 0
+
+---------- INFORME GENERAL ----------
+
+Referencias de lectura:   20
+Referencias de escritura: 17
+Fallos de página:         9
+Volcados de pág. a disco: 3
+
+---------- TABLA DE PÁGINAS ---------
+
+   PÁGINA   Presente      Marco        Modif          Ref          Cnt
+       0          1          2            1            1            8
+       1          1          0            1            0            5
+       2          0          -            -            -            -
+       3          1          1            1            0            1
+
+---------- TABLA DE MARCOS ----------
+
+     MARCO    Página   Presente        Modif          Ref          Cnt
+       0          1          1            1            0            5
+       1          3          1            1            0            1
+       2          0          1            1            1            8
+
+--------- INFORME REEMPLAZO ---------
+
+Reemplazo NFU
+Reloj = 37
+Contador mínimo = 1
+Contador máximo = 8
+
+-------------------------------------
+
+FALLOS DE PÁGINA: --->> 9 <<---
+
