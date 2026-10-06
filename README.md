@@ -1,12 +1,8 @@
 # advanced-os-labs
 
-C labs for the *Sistemas Operativos Avanzados* (Advanced Operating Systems) course at the University of Alcalá (UAH), 2025–26 academic year. They cover dynamic memory, virtual memory paging and the FAT32 file system.
+C labs for the *Sistemas Operativos Avanzados* (Advanced Operating Systems) course at the University of Alcalá (UAH), 2025–26 academic year. They cover virtual memory paging and the FAT32 file system.
 
 ## Labs
-
-### PL1 — Dynamic memory (`PL1/L1.ArchivosFuenteUD1/`)
-
-Small experiment with a dynamic memory module (`mem_dinamica.c/.h`) and a test program (`experimento_mem.c`).
 
 ### PL2 — Paging simulator (`PL2/p02/`)
 
@@ -33,6 +29,8 @@ make
 
 Reads and interprets a FAT32 volume image from a small shell (`fatsoa`): mount the image, show volume information, list directories, `stat` files and extract files following the cluster chain in the FAT (`fs_get()`). A second program, `recuperar_pdf`, recovers a deleted PDF from the volume by locating its directory entry (first byte `0xE5`) and reading its clusters.
 
+The FAT32 volume image used in the lab (`fatsoa.fs`, 100 MB) was provided by the course and is not included; place it in `PL3/P3-CODE/` (any FAT32 image works for the shell).
+
 ```bash
 cd PL3/P3-CODE
 make
@@ -48,3 +46,7 @@ See [`PL3/README.md`](PL3/README.md) (Spanish) for the full write-up: answers to
 ## Requirements
 
 - A C compiler and `make` (developed on macOS/arm64; the code uses POSIX system calls).
+
+## License
+
+[MIT](LICENSE)

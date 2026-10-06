@@ -1,7 +1,6 @@
 # Build output
 *.o
 *.dSYM/
-PL1/L1.ArchivosFuenteUD1/experimento_mem
 PL2/p02/calcular_cdt
 PL2/p02/contar_ops
 PL2/p02/gen_traza
@@ -22,3 +21,6 @@ PL3/P3-CODE/recuperar_pdf
 .idea/
 .vscode/
 .DS_Store
+
+# Course-provided FAT32 image
+*.fs
