@@ -29,7 +29,7 @@ make
 
 Reads and interprets a FAT32 volume image from a small shell (`fatsoa`): mount the image, show volume information, list directories, `stat` files and extract files following the cluster chain in the FAT (`fs_get()`). A second program, `recuperar_pdf`, recovers a deleted PDF from the volume by locating its directory entry (first byte `0xE5`) and reading its clusters.
 
-The FAT32 volume image used in the lab (`fatsoa.fs`, 100 MB) was provided by the course and is not included; place it in `PL3/P3-CODE/` (any FAT32 image works for the shell).
+The FAT32 volume image used in the lab (`fatsoa.fs`, 100 MB) was provided by the course and is not included; place it in `PL3/P3-CODE/`.
 
 ```bash
 cd PL3/P3-CODE
