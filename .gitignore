@@ -1,0 +1,24 @@
+# Build output
+*.o
+*.dSYM/
+PL1/L1.ArchivosFuenteUD1/experimento_mem
+PL2/p02/calcular_cdt
+PL2/p02/contar_ops
+PL2/p02/gen_traza
+PL2/p02/sim_pag_aleatorio
+PL2/p02/sim_pag_fifo
+PL2/p02/sim_pag_fifo2op
+PL2/p02/sim_pag_lru
+PL2/p02/sim_pag_nfu
+PL3/P3-CODE/fatsoa
+PL3/P3-CODE/recuperar_pdf
+
+# Archives and documents from the course
+*.zip
+*.pdf
+*.docx
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
